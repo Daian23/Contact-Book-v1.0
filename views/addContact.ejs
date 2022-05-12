@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+    <html lang="es">
+        <head>
+            <meta charset="utf-8">
+            <title>Add Contact</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" type="text/css" href="css/styleAddContact.css">
+        </head>
+        <body>
+            <%- include('partials/header',{contactsBooks: contactsBooks}); %>
+
+                <div class="div-form">
+
+                    <h3 class="card-title">ADD CONTACT</h3>
+              
+                    <form action="http://localhost:5000/salidaContact" method="POST" id="form" >
+              
+                        <div class="form-group">
+                          <label>Name</label>
+                          <input class="form-control" id="name" type="text" name="name" placeholder="Name"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" id="email" type="email" name="email" placeholder="E-mail"/>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Mobil</label>
+                            <input class="form-control" id="mobil" type="text" name="mobil" placeholder="Mobil"/>
+                          </div>
+
+                          <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="topList">
+                            <label class="form-check-label">Top List</label>
+                         </div>
+
+                         <select class="custom-select" name="ContactB" id="CB">
+                             
+                            <% for(var i=0;i<contactsBooks.length;i++) {  %>
+                                <option name= <%= contactsBooks[i] %>  value=<%= contactsBooks[i] %>  > <%=contactsBooks[i]%></option>
+                            <% } %>
+                            <!--<option name="option"value="option">option</option>-->
+                        </select>
+                        <br></br>
+                       
+                        <input type="submit" class="btn btn-primary" id="ButtonP" name="Add Contact" value="Add Contact"/>
+                      
+              
+                    </form>
+
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert">
+                        <strong><%= mensaje %> </strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                
+            <script src="" async defer></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+       
+        
+        </body>
+    </html>
