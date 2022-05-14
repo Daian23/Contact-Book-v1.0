@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const ClaseContact = require('./ClaseContact');
 const ClaseContactBook = require('./ClaseContactBook');
-const apps = require('./prueba.js');
+const apps = require('./models/prueba');
 
 //const { send } = require('process');
 app.use(express.json());
@@ -40,11 +40,11 @@ app.post('/salidaContact',(request,response)=>{
     let contactBook = request.body.ContactB;
 
     if(apps.validateMobil(contactBook,mobil)){
-        msj="El contacto ya existe";
+        msj="Este contacto no fue registrado porque ya existe";
     }else{
         var tp = apps.convertFavorite(topList);
         var contact = new ClaseContact.Contact(nombre,email,mobil,tp);
-        apps.saveContact(contactBo,JSON.stringify(contact));
+        apps.saveContact(contactBook,JSON.stringify(contact));
         msj="Contacto registrado con exito";
     }
    
@@ -64,9 +64,9 @@ app.post('/salidaCB',(request,response)=>{
     
     let nameCB = request.body.name;
 
-    apps.existsCB(nameCB);
+    var msj = apps.saveCB(nameCB);
 
-    response.render('CreateContactBook.ejs', {contactsBooks: apps.filesDirectory(),mensaje: "Hola"});
+    response.render('CreateContactBook.ejs', {contactsBooks: apps.filesDirectory(),mensaje: msj});
 
     //Solucionar
     //response.sendFile(path.join(__dirname,'./forms/salidaCB.html'));
@@ -84,7 +84,7 @@ app.get('/eliminarContacto/:CB/:mobil',(request,response)=>{
 
 app.get('/CreateContactBook',(request,response) =>{
 
-    response.render('CreateContactBook.ejs',{contactsBooks: apps.filesDirectory()});
+    response.render('CreateContactBook.ejs',{contactsBooks: apps.filesDirectory(), mensaje:"hola"});
 
 });
 

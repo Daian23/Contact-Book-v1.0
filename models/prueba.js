@@ -1,12 +1,12 @@
 var fs = require('fs');
-const ClaseContactBook = require('./ClaseContactBook');
-const ClaseContact = require('./ClaseContact');
+const ClaseContact= require('../ClaseContact');
+const ClaseContactB = require('../ClaseContactBook');
 
 module.exports = class apps{
 
     constructor(){}
 
-    convertFavorite(topList){
+    static convertFavorite(topList){
        if(topList=="on"){
            topList = true;
        }else{
@@ -46,13 +46,25 @@ module.exports = class apps{
     }
   
     static saveCB(nameCB){
-        fs.writeFile('./archivos/' + nameCB + '.txt',(error) =>{
-            if(error){
-                console.log("No se pudo crear el Contact Book");
-            }else{
-                console.log("Contact Book creado con exito!");
-            }
-        });
+        var msj = "";
+        console.log(nameCB);
+        if(fs.existsSync("./archivos/"+nameCB+".txt")){
+            msj = "El Contact Book EXISTE!";
+        }else{
+            console.log("El Contact Book NO EXISTE!");
+            fs.writeFileSync('./archivos/'+nameCB+'.txt',"",(error) =>{
+                if(error){
+                    console.log("No se pudo crear el archivo");
+                }else{
+                    console.log("Se creo el archivo");
+                    console.log(error);
+                    
+                }
+            })
+            msj = "Contact Book Registrado con éxito!"
+        }
+        console.log("---",msj);
+        return msj;
     }
 
     static validateMobil(nameCB,mobil){
@@ -76,7 +88,7 @@ module.exports = class apps{
         try {
             const stringContacts = fs.readFileSync('./archivos/'+nameCB, 'utf-8');
            
-            var contactBook = new ClaseContactBook.ContactBook(nameCB,[]);
+            var contactBook = new ClaseContactB.ContactBook(nameCB,[]);
 
             let arrayContacts = stringContacts.split('|');
 
@@ -84,7 +96,7 @@ module.exports = class apps{
 
             for (let i=0;i<arrayContacts.length;i++){
 
-                var contact = JSON.parse(arrayCBs[i]);
+                var contact = JSON.parse(arrayContacts[i]);
 
                 console.log(contact);
             
