@@ -10,10 +10,10 @@
     </head>
     <body>
       <header>
-        <%- include('partials/header',{contactsBooks: contactsBooks}); %>
+        <% include('partials/header',{contactsBooks: contactsBooks}); %>
       </header>
       <p></p><p></p>
-      <h2><%=contactsBooksL.nombre%></h2>
+      <h2><%=contactsBooksL.name%></h2>
       <div>
         <table class="table">
           <thead>
@@ -32,7 +32,7 @@
                 <td><%= contactsBooksL.contacts[i].email %></td> 
                 <td><%= contactsBooksL.contacts[i].mobil %></td> 
                 <td><%= contactsBooksL.contacts[i].topList %></td>
-                <td><a href="https://contactsbooks.herokuapp.com/eliminarContacto/<%=contactsBooksL.nombre%>/<%= contactsBooksL.contacts[i].mobil %>">Eliminar</a></td>  
+                <td><a href="https://contactsbooks.herokuapp.com/eliminarContacto/<%=contactsBooksL.name%>/<%= contactsBooksL.contacts[i].mobil %>">Eliminar</a></td>  
                 
               </tr>
             <% } %>

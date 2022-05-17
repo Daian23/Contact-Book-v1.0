@@ -55,8 +55,9 @@ app.post('/salidaContact',(request,response)=>{
 app.get('/home/:CB',(request,response) =>{
 
     var contactsBook = apps.loadContacts(`${request.params.CB}`);
-
+    console.log("Name CB",contactsBook.name);
     response.render('listContacts.ejs', {contactsBooksL: contactsBook, contactsBooks: apps.filesDirectory()});
+    
 
 });
 
