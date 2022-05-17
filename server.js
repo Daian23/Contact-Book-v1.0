@@ -88,8 +88,8 @@ app.get('/CreateContactBook',(request,response) =>{
 
 });
 
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.listen(port,()=>{
+app.listen(PORT,()=>{
   console.log(`Express listen on port ${port}`);
 });
