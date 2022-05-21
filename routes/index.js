@@ -55,7 +55,7 @@ router.get('/eliminarContacto/:CB/:mobil',(request,response)=>{
    var contactsBook = apps.loadContacts(`${request.params.CB}`);
 
    //response.render('listContacts.ejs', {contactsBooksL: contactsBook, contactsBooks: apps.filesDirectory()});
-   response.redirect('/home/:CB');
+   response.redirect('/home/:'+`${request.params.CB}`);
 });
 
 router.get('/addContactBook',(request,response) =>{
