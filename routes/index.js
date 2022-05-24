@@ -22,8 +22,8 @@ router.post('/addContact',(request,response)=>{
     let topList = request.body.topList;
     let contactBook = request.body.ContactB;
 
-    if(!nombre || !email || !mobil || !topList || !contactBook){
-        response.send(400).send("Loa campos no pueden estar vacíos");
+    if(!nombre || !email || !mobil || !contactBook){
+        response.send(400).send("Los campos no pueden estar vacíos");
     }
 
     if(apps.validateMobil(contactBook,mobil)){
@@ -41,9 +41,11 @@ router.post('/addContact',(request,response)=>{
 
 router.get('/home/:CB',(request,response) =>{
 
+    console.log(`${request.params.CB}`);
+
     var contactsBook = apps.loadContacts(`${request.params.CB}`);
     console.log("Name CB",contactsBook.name);
-    response.render('listContacts.ejs', {contactsBooksL: contactsBook, contactsBooks: apps.filesDirectory()});
+    response.render('listContacts.ejs', { contactsBooks: apps.filesDirectory(),contactsBooksL: contactsBook});
     
 
 });
@@ -55,7 +57,7 @@ router.get('/eliminarContacto/:CB/:mobil',(request,response)=>{
    var contactsBook = apps.loadContacts(`${request.params.CB}`);
 
    //response.render('listContacts.ejs', {contactsBooksL: contactsBook, contactsBooks: apps.filesDirectory()});
-   response.redirect('/home/:'+`${request.params.CB}`);
+   response.redirect('/home/'+`${request.params.CB}`);
 });
 
 router.get('/addContactBook',(request,response) =>{
