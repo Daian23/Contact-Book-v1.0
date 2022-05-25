@@ -5,74 +5,100 @@ const ClaseContactBook = require('../ClaseContactBook');
 const apps = require('../models/prueba');
 
 router.get('/',(request,response) =>{
-    response.render('menu.ejs', {contactsBooks: apps.filesDirectory()});
+    response.render('menu.ejs');
 });
 
 router.get('/addContact',(request,response) =>{
 
-    response.render('addContact.ejs', {contactsBooks: apps.filesDirectory(), mensaje: "Hola"});
+    response.render('addContact.ejs',{contactsBooks: apps.filesDirectory(),mensaje:""});
+   
+});
+//PRUEBA
+router.get('/contactsBooks',(request,response) =>{
+
+    response.render('contactsBooks.ejs', {contactsBooks: apps.filesDirectory()});
    
 });
 
 router.post('/addContact',(request,response)=>{
     
-    let nombre = request.body.name;
+    let name = request.body.name;
     let email = request.body.email;
     let mobil = request.body.mobil;
     let topList = request.body.topList;
     let contactBook = request.body.ContactB;
+    console.log("---",name);
 
-    if(!nombre || !email || !mobil || !contactBook){
-        response.send(400).send("Los campos no pueden estar vacíos");
+    var msj = "";
+
+    if(apps.validateInput(name,email,mobil,contactBook)){
+        msj = "Los campos no pueden estar vacíos"
+    }else {
+        if(apps.validateMobil(contactBook,mobil)){
+            msj="Este contacto no fue registrado porque ya existe";
+        }else{
+            var tp = apps.convertFavorite(topList);
+            var contact = new ClaseContact.Contact(name,email,mobil,tp);
+            apps.saveContact(contactBook,JSON.stringify(contact));
+            msj="Contacto registrado con exito";
+        }
     }
 
-    if(apps.validateMobil(contactBook,mobil)){
-        msj="Este contacto no fue registrado porque ya existe";
-    }else{
-        var tp = apps.convertFavorite(topList);
-        var contact = new ClaseContact.Contact(nombre,email,mobil,tp);
-        apps.saveContact(contactBook,JSON.stringify(contact));
-        msj="Contacto registrado con exito";
-    }
-   
-    response.redirect('/addContact');
+    response.render('addContact.ejs',{contactsBooks: apps.filesDirectory(),mensaje:msj});
+    //response.render('/addContact');
 
 });
-
+//Muestra la lista de Libretas de Contactos
 router.get('/home/:CB',(request,response) =>{
 
     console.log(`${request.params.CB}`);
 
     var contactsBook = apps.loadContacts(`${request.params.CB}`);
+    contactsBook.contacts.sort(function (a, b) {
+        if (a.topList < b.topList) {
+          return 1;
+        }
+        if (a.topList > b.topList) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
     console.log("Name CB",contactsBook.name);
-    response.render('listContacts.ejs', { contactsBooks: apps.filesDirectory(),contactsBooksL: contactsBook});
+    response.render('listContacts.ejs', {contactsBooksL: contactsBook});
     
 
 });
-
-router.get('/eliminarContacto/:CB/:mobil',(request,response)=>{
+//Eliminar un Contact Book
+router.get('/deleteContact/:CB/:mobil',(request,response)=>{
 
    apps.deleteContact(`${request.params.CB}`,request.params.mobil);
 
-   var contactsBook = apps.loadContacts(`${request.params.CB}`);
+   //var contactsBook = apps.loadContacts(`${request.params.CB}`);
 
-   //response.render('listContacts.ejs', {contactsBooksL: contactsBook, contactsBooks: apps.filesDirectory()});
    response.redirect('/home/'+`${request.params.CB}`);
 });
 
+//Muestra la vista del Contact Book
 router.get('/addContactBook',(request,response) =>{
 
-    response.render('CreateContactBook.ejs',{contactsBooks: apps.filesDirectory(), mensaje:"hola"});
+    response.render('CreateContactBook.ejs',{mensaje:""});
 
 });
-
+//Guardar una libreta de contacto
 router.post('/addContactBook',(request,response)=>{
     
     let nameCB = request.body.name;
 
-    var msj = apps.saveCB(nameCB);
+    var msj;
 
-    response.redirect('/addContactBook');
+    if(nameCB==""){
+      msj = "El campo no puede estar vacío!"
+    }else{
+      msj = apps.saveCB(nameCB);
+    }
+    
+    response.render('CreateContactBook.ejs',{mensaje:msj});
 });
 
 module.exports = router;

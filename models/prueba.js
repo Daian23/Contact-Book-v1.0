@@ -17,13 +17,15 @@ module.exports = class apps{
 
     static filesDirectory(){
         var files = fs.readdirSync('./archivos');
-        
+        for(let i=0;i<files.length;i++){
+            files[i] = files[i].slice(0,-4);
+        }
         return files;
     }
 
     static saveContact(contactBName,contacts){
 
-        fs.appendFileSync('./archivos/'+contactBName,contacts + '|' ,(error) =>{
+        fs.appendFileSync('./archivos/'+contactBName+'.txt',contacts + '|' ,(error) =>{
             if(error){
                 console.log("No se pudo escribir el texto");
             }else{
@@ -86,7 +88,7 @@ module.exports = class apps{
     static loadContacts(nameCB){
         
         try {
-            const stringContacts = fs.readFileSync('./archivos/'+nameCB, 'utf-8');
+            const stringContacts = fs.readFileSync('./archivos/'+nameCB+'.txt', 'utf-8');
            
             var contactBook = new ClaseContactB.ContactBook(nameCB,[]);
 
@@ -110,9 +112,20 @@ module.exports = class apps{
         return contactBook;
     }
 
+    static validateInput(name,email,mobil,nameCB){
+        var flag = false;
+        if(name=="" || email=="" || mobil=="" || nameCB==""){
+            flag = true;
+        }
+        console.log("flag->",flag);
+        return flag;
+    }
+
     static deleteContact(nameCB,mobil){
 
-        const arrayData = fs.readFileSync('./archivos/'+nameCB, 'utf-8').split('|');
+        console.log("NM",nameCB,mobil);
+
+        const arrayData = fs.readFileSync('./archivos/'+nameCB+'.txt', 'utf-8').split('|');
         
         arrayData.splice(-1, 1);
       
@@ -124,11 +137,11 @@ module.exports = class apps{
         }
        
         if(arrayData.length == 0){
-            fs.writeFileSync('./archivos/'+nameCB,'');
+            fs.writeFileSync('./archivos/'+nameCB+'.txt','');
         }else{
             console.log("....",arrayData);
             const dataString = arrayData.join('|');
-            fs.writeFileSync('./archivos/'+nameCB, dataString+"|");
+            fs.writeFileSync('./archivos/'+nameCB+'.txt', dataString+"|");
         }  
     }
 }
