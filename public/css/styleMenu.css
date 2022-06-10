@@ -1,0 +1,11 @@
+.nav-link { color: #1a1a1a;}
+.nav-link:hover {color:#1a1a1a;}
+body{
+    background-image: url(../css/pexels-photo-210660.jpeg);
+    background-size:cover;
+}
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 0.3px 0.5px 0 rgba(0, 0, .05);
+    min-height: 70px;
+}

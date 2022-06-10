@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('partials/enlaces');%>
+    <%- include('partials/link');%>
         <title>Libretas de Contacto</title>
 </head>
 
@@ -13,9 +13,9 @@
     <%- include('partials/header'); %>
         <div class="row mt-2">
             <% for(var i=0;i<contactsBooks.length;i++) { %>
-                <div class="col-md-2">
+                <div class="col-md-2 container">
                     <div class="card border-dark mb-5 justify-center" style="width: 18rem;">
-                        <img src="../css/contacts1.jpg" class="card-img-top" alt="">
+                        <img src="css/contacts1.jpg" class="card-img-top" alt="">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="/home/<%= contactsBooks[i] %>" class="btn btn-dark btn-lg btn-block">

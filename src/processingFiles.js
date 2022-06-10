@@ -1,43 +1,15 @@
 var fs = require('fs');
-const ClaseContact= require('../ClaseContact');
-const ClaseContactB = require('../ClaseContactBook');
+const { fileURLToPath } = require('url');
+const ClaseContact= require('./classContact');
+const ClaseContactB = require('./classContactBook');
 
 module.exports = class apps{
 
     constructor(){}
 
-    static convertFavorite(topList){
-       if(topList=="on"){
-           topList = true;
-       }else{
-        topList = false;
-       }
-       return topList;
-    }
-
-    static filesDirectory(){
-        var files = fs.readdirSync('./archivos');
-        for(let i=0;i<files.length;i++){
-            files[i] = files[i].slice(0,-4);
-        }
-        return files;
-    }
-
-    static saveContact(contactBName,contacts){
-
-        fs.appendFileSync('./archivos/'+contactBName+'.txt',contacts + '|' ,(error) =>{
-            if(error){
-                console.log("No se pudo escribir el texto");
-            }else{
-                console.log("Escritura exitosa");
-            }
-        });
-    
-    }
-
     static existsCB(nameCB){
        
-        if(fs.existsSync("./archivos/"+nameCB+".txt")){
+        if(fs.existsSync("./files/"+nameCB+".txt")){
             console.log("El Contact Book EXISTE!");
         }else{
             console.log("El Contact Book NO EXISTE!");
@@ -49,24 +21,51 @@ module.exports = class apps{
   
     static saveCB(nameCB){
         var msj = "";
-        console.log(nameCB);
-        if(fs.existsSync("./archivos/"+nameCB+".txt")){
+        
+        if(fs.existsSync("./files/"+nameCB+".txt")){
             msj = "El Contact Book EXISTE!";
         }else{
-            console.log("El Contact Book NO EXISTE!");
-            fs.writeFileSync('./archivos/'+nameCB+'.txt',"",(error) =>{
+            
+            fs.writeFileSync('./files/'+nameCB+'.txt',"",(error) =>{
                 if(error){
                     console.log("No se pudo crear el archivo");
                 }else{
                     console.log("Se creo el archivo");
-                    console.log(error);
-                    
                 }
             })
             msj = "Contact Book Registrado con éxito!"
         }
-        console.log("---",msj);
+        
         return msj;
+    }
+
+    
+
+    static filesDirectory(){
+        var files = fs.readdirSync('./files');
+        console.log(files);
+        for(let i=0;i<files.length;i++){
+            files[i] = files[i].slice(0,-4);
+        }
+        return files;
+    }
+
+    static convertFavorite(topList){
+        if(topList=="on"){
+            topList = true;
+        }else{
+         topList = false;
+        }
+        return topList;
+    }
+
+    static validateInput(name,email,mobil,nameCB){
+        var flag = false;
+        if(name=="" || email=="" || mobil=="" || nameCB==""){
+            flag = true;
+        }
+        console.log("flag->",flag);
+        return flag;
     }
 
     static validateMobil(nameCB,mobil){
@@ -85,10 +84,23 @@ module.exports = class apps{
         return flag;
     }
 
+    static saveContact(contactBName,contact){
+
+        fs.appendFileSync('./files/'+contactBName+'.txt',contact + '|' ,(error) =>{
+            if(error){
+                console.log("No se pudo escribir el texto");
+            }else{
+                console.log("Escritura exitosa");
+            }
+        });
+    
+    }
+
+
     static loadContacts(nameCB){
         
         try {
-            const stringContacts = fs.readFileSync('./archivos/'+nameCB+'.txt', 'utf-8');
+            const stringContacts = fs.readFileSync('./files/'+nameCB+'.txt', 'utf-8');
            
             var contactBook = new ClaseContactB.ContactBook(nameCB,[]);
 
@@ -112,24 +124,15 @@ module.exports = class apps{
         return contactBook;
     }
 
-    static validateInput(name,email,mobil,nameCB){
-        var flag = false;
-        if(name=="" || email=="" || mobil=="" || nameCB==""){
-            flag = true;
-        }
-        console.log("flag->",flag);
-        return flag;
-    }
+    
 
     static deleteContact(nameCB,mobil){
 
-        console.log("NM",nameCB,mobil);
-
-        const arrayData = fs.readFileSync('./archivos/'+nameCB+'.txt', 'utf-8').split('|');
+        const arrayData = fs.readFileSync('./files/'+nameCB+'.txt', 'utf-8').split('|');
         
         arrayData.splice(-1, 1);
       
-        for (let i=0;i<arrayData.length;i++){
+        for(let i=0;i<arrayData.length;i++){
 
             if(JSON.parse(arrayData[i]).mobil==mobil){
                 arrayData.splice(i,1);
@@ -137,11 +140,11 @@ module.exports = class apps{
         }
        
         if(arrayData.length == 0){
-            fs.writeFileSync('./archivos/'+nameCB+'.txt','');
+            fs.writeFileSync('./files/'+nameCB+'.txt','');
         }else{
             console.log("....",arrayData);
             const dataString = arrayData.join('|');
-            fs.writeFileSync('./archivos/'+nameCB+'.txt', dataString+"|");
+            fs.writeFileSync('./files/'+nameCB+'.txt', dataString+"|");
         }  
     }
 }

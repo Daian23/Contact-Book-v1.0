@@ -4,7 +4,7 @@
             <meta charset="utf-8">
             <title>Add Contact</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <%- include('partials/enlaces' );%>
+            <%- include('partials/link' );%>
         </head>
         <body>
             <%- include('partials/header'); %>
@@ -13,7 +13,7 @@
 
                     <h3 class="card-title">Añadir Contacto</h3>
               
-                    <form action="https://contactsbooks.herokuapp.com/addContact" method="POST" id="form" >
+                    <form action="/addContact" method="POST" id="form" >
               
                         <div class="form-group">
                           <label>Nombre</label>
@@ -40,7 +40,7 @@
                             <% for(var i=0;i<contactsBooks.length;i++) {  %>
                                 <option name= <%= contactsBooks[i] %>  value=<%= contactsBooks[i] %>  > <%=contactsBooks[i]%></option>
                             <% } %>
-                            <!--<option name="option"value="option">option</option>-->
+                
                         </select>
                         <br></br>
                        
