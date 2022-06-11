@@ -44,13 +44,15 @@ router.get('/home/:CB',(request,response) =>{
 
     var contactsBook = processingFiles.loadContacts(`${request.params.CB}`);
     contactsBook.contacts.sort(function (a, b) {
+        //se sitúa b en un índice menor que a
         if (a.topList < b.topList) {
           return 1;
         }
+        //se sitúa a en un índice menor que b
         if (a.topList > b.topList) {
           return -1;
         }
-        // a must be equal to b
+        // a y b se deja sin cambios
         return 0;
       });
     console.log("Name CB",contactsBook.name);
